@@ -25,6 +25,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <title>Flex Living Reviews Dashboard</title>
+          <meta name="author" content="Flex Living" />
+
+    <meta property="og:title" content="Flex Living Reviews Dashboard" />
+    <meta property="og:description" content="Professional reviews dashboard for monitoring property guest feedback and ratings" />
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

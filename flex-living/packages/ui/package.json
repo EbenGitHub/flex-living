@@ -24,13 +24,15 @@
   },
   "peerDependencies": {
     "next": "^15.5.6",
-    "react": "19.1.0"
+    "react": "19.1.0",
+    "@flex-living/utils": "workspace:*"
   },
   "exports": {
     "./globals.css": "./src/styles/globals.css",
     "./postcss.config": "./postcss.config.mjs",
     ".": "./src/main.ts",
-    "./forms": "./src/forms/index.ts"
+    "./forms": "./src/forms/index.ts",
+    "./cards": "./src/cards/index.ts"
   },
   "keywords": [],
   "author": "",
