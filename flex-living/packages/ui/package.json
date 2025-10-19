@@ -27,6 +27,8 @@
     "react": "19.1.0"
   },
   "exports": {
+    "./globals.css": "./src/styles/globals.css",
+    "./postcss.config": "./postcss.config.mjs",
     ".": "./src/main.ts",
     "./forms": "./src/forms/index.ts"
   },
