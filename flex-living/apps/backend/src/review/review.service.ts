@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ReviewCategory } from '../entities/review-category.entity';
@@ -6,6 +6,7 @@ import { Review } from '../entities/review.entity';
 import { ThirdPartyService } from '../thrid-parties/third-party.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
+import { instanceToPlain } from 'class-transformer';
 
 @Injectable()
 export class ReviewService {
@@ -22,14 +23,17 @@ export class ReviewService {
     return 'This action adds a new review';
   }
 
+  async syncReviewsFromGoogleReview(): Promise<void> {}
+
   async syncReviewsFromHostaway(): Promise<void> {
+    console.log('called');
     try {
       const data = await this.thirdParty.get<{ result: any[] }>('/reviews');
 
       // Assuming data is an array of reviews
       for (const item of data.result) {
         const existing = await this.reviewRepo.findOne({
-          where: { id: item.id },
+          where: { sourceId: item.id, source: 'hostaway' },
         });
         if (existing) {
           this.logger.log(`Skipping review ${item.id} (already exists)`);
@@ -38,7 +42,6 @@ export class ReviewService {
 
         // Create Review entity
         const review = this.reviewRepo.create({
-          id: item.id,
           type: item.type,
           status: item.status,
           rating: item.rating,
@@ -46,6 +49,8 @@ export class ReviewService {
           submittedAt: new Date(item.submittedAt),
           guestName: item.guestName,
           listingName: item.listingName,
+          sourceId: item.id,
+          source: 'hostaway',
         });
 
         await this.reviewRepo.save(review);
@@ -70,21 +75,26 @@ export class ReviewService {
   }
 
   async findAll() {
-    const data = await this.thirdParty.get<{ result: any[] }>('/reviews');
-    return data.result;
-    return this.reviewRepo.find();
-    return `This action returns all review`;
+    return instanceToPlain(this.reviewRepo.find());
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} review`;
+  async approveReview(id: number): Promise<Review> {
+    const review = await this.reviewRepo.findOne({ where: { id } });
+    if (!review) {
+      throw new NotFoundException(`Review with id ${id} not found`);
+    }
+
+    review.isApproved = true;
+    return this.reviewRepo.save(review);
   }
 
-  update(id: number, updateReviewDto: UpdateReviewDto) {
-    return `This action updates a #${id} review`;
-  }
+  async disapproveReview(id: number): Promise<Review> {
+    const review = await this.reviewRepo.findOne({ where: { id } });
+    if (!review) {
+      throw new NotFoundException(`Review with id ${id} not found`);
+    }
 
-  remove(id: number) {
-    return `This action removes a #${id} review`;
+    review.isApproved = false;
+    return this.reviewRepo.save(review);
   }
 }

@@ -1,15 +1,6 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
-import { ReviewService } from './review.service';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { CreateReviewDto } from './dto/create-review.dto';
-import { UpdateReviewDto } from './dto/update-review.dto';
+import { ReviewService } from './review.service';
 
 @Controller('review')
 export class ReviewController {
@@ -30,18 +21,18 @@ export class ReviewController {
     return this.reviewService.syncReviewsFromHostaway();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.reviewService.findOne(+id);
+  @Post('sync-google-review')
+  syncGoogleReview() {
+    return this.reviewService.syncReviewsFromGoogleReview();
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateReviewDto: UpdateReviewDto) {
-    return this.reviewService.update(+id, updateReviewDto);
+  @Patch('approve/:id')
+  approveReview(@Param('id') id: string) {
+    return this.reviewService.approveReview(+id);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.reviewService.remove(+id);
+  @Patch('disprove/:id')
+  disapproveReview(@Param('id') id: string) {
+    return this.reviewService.disapproveReview(+id);
   }
 }

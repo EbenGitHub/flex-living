@@ -4,19 +4,22 @@ import {
   Column,
   CreateDateColumn,
   OneToMany,
+  Unique,
 } from 'typeorm';
 import { ReviewCategory } from './review-category.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
+@Unique(['source', 'sourceId']) // ensures uniqueness
 export class Review {
   @PrimaryGeneratedColumn()
-  id!: number;
+  id!: number; // your own ID
 
   @Column({ type: 'varchar' })
-  type!: string; // e.g., "host-to-guest"
+  type!: string;
 
   @Column({ type: 'varchar', default: 'published' })
-  status!: string; // e.g., "published"
+  status!: string;
 
   @Column({ type: 'float', nullable: true })
   rating!: number | null;
@@ -26,7 +29,7 @@ export class Review {
 
   @OneToMany(() => ReviewCategory, (category) => category.review, {
     cascade: true,
-    eager: true, // automatically load the categories when you fetch a review
+    eager: true,
   })
   reviewCategory!: ReviewCategory[];
 
@@ -38,4 +41,15 @@ export class Review {
 
   @Column({ type: 'varchar' })
   listingName!: string;
+
+  @Exclude()
+  @Column({ type: 'varchar' })
+  sourceId!: string;
+
+  @Exclude()
+  @Column({ type: 'varchar' })
+  source!: string;
+
+  @Column({ type: 'boolean', default: false })
+  isApproved!: boolean; // new flag to track approval
 }
