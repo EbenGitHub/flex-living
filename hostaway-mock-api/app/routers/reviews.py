@@ -1,19 +1,16 @@
-# app/routers/users.py
+from fastapi import APIRouter, Header, HTTPException
+from app.services.http_client import get_from_hostaway
 
-from fastapi import APIRouter
+router = APIRouter(prefix="/reviews", tags=["reviews"])
 
-# ⭐️ Create an APIRouter instance
-router = APIRouter(
-    tags=["Users"], # Used for documentation (Swagger/ReDoc)
-    # The prefix is applied in main.py, e.g., /api/v1/users
-    prefix="/users" 
-)
-
-@router.post("/")
-async def create_user(user: dict):
-    # This would contain your actual business logic (e.g., calling a service or CRUD file)
-    return {"id": 1, "username": user["username"]}
-
-@router.get("/{user_id}")
-async def read_user(user_id: int):
-    return {"id": user_id, "username": f"User_{user_id}"}
+@router.get("/")
+async def fetch_reviews(
+    authorization: str = Header(..., description="Bearer access token"),
+):
+    headers = {"Authorization": authorization}
+    print({authorization})
+    try:
+        response = await get_from_hostaway("/reviews", headers=headers)
+        return response
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
