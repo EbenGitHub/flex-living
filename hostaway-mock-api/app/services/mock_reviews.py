@@ -15,7 +15,7 @@ def generate_random_reviews(seed: int = None, count: int = None):
     If count is None, generate a random number between 1 and 5.
     """
     rng = random.Random(seed)
-    count = count or rng.randint(1, 5)
+    count = count or rng.randint(5, 15)
     reviews = []
 
     for _ in range(count):
