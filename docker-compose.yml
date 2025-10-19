@@ -1,0 +1,87 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ./flex-living
+      dockerfile: Dockerfile
+      target: runner_backend
+      args:
+        APP_NAME: backend
+    ports:
+      - "4000:4000"
+
+  frontend:
+    build:
+      context: ./flex-living
+      dockerfile: Dockerfile
+      target: runner_frontend
+      args:
+        APP_NAME: frontend
+    ports:
+      - "3000:3000"
+
+  hostaway:
+    build:
+      context: ./hostaway-mock-api
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+
+  # storybook:
+  #   build:
+  #     context: /Users/mac/msl/flex-living
+  #     dockerfile: flex-living/apps/storybook/Dockerfile
+  #   environment:
+  #     - HOST=0.0.0.0
+  #     - PORT=3002
+  #     - STORYBOOK_DISABLE_TELEMETRY=true
+  #   networks:
+  #     - web
+
+  # mockapi:
+  #   build:
+  #     context: /Users/mac/msl/flex-living/hostaway-mock-api
+  #     dockerfile: Dockerfile
+  #   networks:
+  #     - web
+
+  # db:
+  #   image: postgres:15-alpine
+  #   restart: always
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data/
+  #   env_file:
+  #     - .env
+  #   expose:
+  #     - 5432
+
+  # redis:
+  #   image: redis:7-alpine
+  #   restart: always
+  #   volumes:
+  #     - redis_data:/data
+  #   expose:
+  #     - 6379
+
+  # nginx:
+  #   image: nginx:alpine
+  #   depends_on:
+  #     - frontend
+  #     - backend
+  #     - storybook
+  #     - mockapi
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - /Users/mac/msl/flex-living/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+  #   networks:
+  #     - web
+
+networks:
+  web:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
