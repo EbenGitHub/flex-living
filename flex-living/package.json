@@ -1,0 +1,27 @@
+{
+  "name": "flex-living",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Flex Living Review Dashboard",
+  "main": "index.js",
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "dev": "turbo run dev --concurrency=100",
+    "build": "turbo run build"
+  },
+  "keywords": [
+    "Flex Living",
+    "Review Dashboard"
+  ],
+  "author": "Abenezer Eshetie (abenezergoo@gmail.com)",
+  "license": "UNLICENSED",
+  "packageManager": "pnpm@10.8.1",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "devDependencies": {
+    "@nestjs/cli": "^11.0.10",
+    "turbo": "^2.5.8"
+  }
+}
