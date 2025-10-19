@@ -57,13 +57,16 @@ services:
       - 5432
     ports:
       - "5432:5432"
-  # redis:
-  #   image: redis:7-alpine
-  #   restart: always
-  #   volumes:
-  #     - redis_data:/data
-  #   expose:
-  #     - 6379
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+    volumes:
+      - redis_data:/data
+    expose:
+      - 6379
+    ports:
+      - "6379:6379"
 
   # nginx:
   #   image: nginx:alpine
