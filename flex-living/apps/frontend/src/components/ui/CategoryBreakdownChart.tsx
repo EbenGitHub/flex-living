@@ -9,23 +9,26 @@ interface CategoryBreakdownChartProps {
 
 export const CategoryBreakdownChart = ({ reviews }: CategoryBreakdownChartProps) => {
   const categories = ['cleanliness', 'communication', 'respect_house_rules'];
-  
+
   const categoryData = categories.map(category => {
-    const ratings = reviews.flatMap(r => 
-      r.reviewCategory.filter(c => c.category === category).map(c => c.rating)
+    const ratings = reviews.flatMap(r =>
+      r.reviewCategory
+        .filter(c => c.category === category)
+        .map(c => c.rating)
     );
-    const avg = ratings.reduce((sum, r) => sum + r, 0) / ratings.length;
-    
+    const avg = ratings.length ? ratings.reduce((sum, r) => sum + r, 0) / ratings.length : 0;
+
     return {
       category: category.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
       rating: parseFloat(avg.toFixed(2)),
     };
   });
 
+  // Tailwind-native color mapping
   const getColor = (rating: number) => {
-    if (rating >= 8) return 'hsl(var(--chart-2))';
-    if (rating >= 6) return 'hsl(var(--chart-4))';
-    return 'hsl(var(--destructive))';
+    if (rating >= 8) return '#16a34a'; // green-600
+    if (rating >= 6) return '#f59e0b'; // yellow-500
+    return '#dc2626'; // red-600
   };
 
   return (
@@ -36,22 +39,24 @@ export const CategoryBreakdownChart = ({ reviews }: CategoryBreakdownChartProps)
       <CardContent>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={categoryData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+            <CartesianGrid stroke="#e5e7eb" strokeDasharray="3 3" /> {/* gray-200 */}
             <XAxis 
               dataKey="category" 
-              stroke="hsl(var(--muted-foreground))"
+              stroke="#6b7280" // gray-500
               fontSize={12}
             />
             <YAxis 
               domain={[0, 10]} 
-              stroke="hsl(var(--muted-foreground))"
+              stroke="#6b7280" // gray-500
               fontSize={12}
             />
             <Tooltip 
               contentStyle={{
-                backgroundColor: 'hsl(var(--card))',
-                border: '1px solid hsl(var(--border))',
-                borderRadius: '8px',
+                backgroundColor: '#f9fafb', // gray-50
+                border: '1px solid #e5e7eb', // gray-200
+                borderRadius: '0.5rem', // 8px
+                padding: '0.5rem 1rem',
+                color: '#111827', // gray-900
               }}
             />
             <Bar dataKey="rating" radius={[8, 8, 0, 0]}>

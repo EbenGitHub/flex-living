@@ -10,7 +10,7 @@ interface PropertyComparisonChartProps {
 export const PropertyComparisonChart = ({ reviews }: PropertyComparisonChartProps) => {
   const propertyData = reviews.reduce((acc, review) => {
     const propertyKey = review.listingName;
-    
+
     if (!acc[propertyKey]) {
       acc[propertyKey] = {
         property: propertyKey.split(' - ')[0],
@@ -18,13 +18,13 @@ export const PropertyComparisonChart = ({ reviews }: PropertyComparisonChartProp
         totalReviews: 0,
       };
     }
-    
+
     const avgRating = review.rating || 
       review.reviewCategory.reduce((sum, cat) => sum + cat.rating, 0) / review.reviewCategory.length;
-    
+
     acc[propertyKey].ratings.push(avgRating);
     acc[propertyKey].totalReviews++;
-    
+
     return acc;
   }, {} as Record<string, {ratings: number[], totalReviews: number, property: string}>);
 
@@ -44,31 +44,33 @@ export const PropertyComparisonChart = ({ reviews }: PropertyComparisonChartProp
       <CardContent>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={chartData} layout="vertical">
-            <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+            <CartesianGrid stroke="#e5e7eb" strokeDasharray="3 3" /> {/* gray-200 */}
             <XAxis 
               type="number" 
               domain={[0, 10]} 
-              stroke="hsl(var(--muted-foreground))"
+              stroke="#6b7280" // gray-500
               fontSize={12}
             />
             <YAxis 
               type="category" 
               dataKey="property" 
-              stroke="hsl(var(--muted-foreground))"
+              stroke="#6b7280" // gray-500
               fontSize={12}
               width={100}
             />
             <Tooltip 
               contentStyle={{
-                backgroundColor: 'hsl(var(--card))',
-                border: '1px solid hsl(var(--border))',
-                borderRadius: '8px',
+                backgroundColor: '#f9fafb', // gray-50
+                border: '1px solid #e5e7eb', // gray-200
+                borderRadius: '0.5rem', // 8px
+                padding: '0.5rem 1rem',
+                color: '#111827', // gray-900
               }}
             />
             <Legend />
             <Bar 
               dataKey="avgRating" 
-              fill="hsl(var(--chart-1))" 
+              fill="#3b82f6" // blue-500
               radius={[0, 8, 8, 0]}
               name="Avg Rating"
             />
