@@ -4,11 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview",
     "dev": "storybook dev -p 3002 --no-open",
-    "build-storybook": "storybook build"
+    "build": "storybook build",
+    "lint": "eslint .",
+    "preview": "vite preview"
   },
   "dependencies": {
     "react": "^19.1.1",
