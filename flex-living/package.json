@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
+    "prepare": "husky",
     "dev": "turbo run dev --concurrency=100",
     "build": "turbo run build"
   },
@@ -22,6 +23,21 @@
   ],
   "devDependencies": {
     "@nestjs/cli": "^11.0.10",
+    "eslint": "^9.38.0",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-prettier": "^5.2.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.4",
+    "prettier": "^3.4.2",
     "turbo": "^2.5.8"
+  },
+  "lint-staged": {
+    "packages/**/*.{js,ts,jsx,tsx}": [
+      "eslint --cache --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,css}": [
+      "prettier --write"
+    ]
   }
 }

@@ -2,6 +2,7 @@ import Image from "next/image";
 import {flexLivingPackageTest} from "@flex-living/utils/test"
 import {Button} from "@flex-living/ui/forms"
 
+
 export default function Home() {
   const test = flexLivingPackageTest()
   return (
