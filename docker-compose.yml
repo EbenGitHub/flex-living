@@ -9,7 +9,7 @@ services:
       args:
         APP_NAME: backend
     ports:
-      - "4000:4000"
+      - "3001:3001"
 
   frontend:
     build:

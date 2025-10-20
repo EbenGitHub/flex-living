@@ -199,6 +199,7 @@ export const ReviewsTable = () => {
                     <TableCell className="text-right">
                       <Button
                         size="sm"
+                        disabled={disproveMutation.isPending || approveMutation.isPending}
                         variant={review.isApproved ? "outline" : "default"}
                         onClick={() => handleApprovalToggle(review.id, review.isApproved)}
                         className="gap-1"

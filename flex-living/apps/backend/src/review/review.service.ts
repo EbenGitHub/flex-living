@@ -60,7 +60,6 @@ export class ReviewService {
   }
 
   async syncReviewsFromHostaway(): Promise<void> {
-    console.log('called');
     try {
       const data = await this.thirdParty.get<{ result: ReviewType[] }>(
         '/reviews',

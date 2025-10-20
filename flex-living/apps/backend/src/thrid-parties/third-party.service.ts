@@ -33,7 +33,6 @@ export class ThirdPartyService {
       params.append('client_secret', clientSecret!);
       params.append('scope', 'general');
       params.append('grant_type', 'client_credentials'); // if required by API
-
       const { data } = await firstValueFrom(
         this.httpService.post(`${apiUrl}/auth/token`, params.toString(), {
           headers: {
@@ -49,9 +48,7 @@ export class ThirdPartyService {
       });
     } catch (error) {
       //   this.logger.error('Failed to authenticate', error);
-      throw new InternalServerErrorException(
-        'Failed to authenticate with third party',
-      );
+      throw new InternalServerErrorException(error);
     }
   }
 
