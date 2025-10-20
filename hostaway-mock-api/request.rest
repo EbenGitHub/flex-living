@@ -1,8 +1,8 @@
 POST http://localhost:8000/api/v1/auth/token
 {
     "grant_type": "client_credentials",
-    "client_id": 61148,
-    "client_secret": "f94377ebbbb479490bb3ec364649168dc443dda2e4830facaf5de2e74ccc9152",
+    "client_id": 123,
+    "client_secret": "some-secret",
     "scope": "general",
     "Content-type": "application/x-www-form-urlencoded"
 }
