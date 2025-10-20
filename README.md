@@ -6,6 +6,7 @@ A comprehensive review management system for property management companies, buil
 
 - [Overview](#overview)
 - [Architecture](#architecture)
+- [Visual Overview](#visual-overview)
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
 - [Prerequisites](#prerequisites)
@@ -119,6 +120,59 @@ sequenceDiagram
     A->>D: Store Reviews
     A->>R: Cache Token
 ```
+
+## 🖼️ Visual Overview
+
+Below are visual snapshots that highlight key parts of the application and repository.
+
+### Dashboard Metrics
+
+![Dashboard Metrics](./assets/dashboard-metrics.png)
+
+Shows the analytics dashboard with KPIs, charts, and trends for property reviews.
+
+### Review Management
+
+![Review Management](./assets/dashboard-manage.png)
+
+Admin view for moderating reviews: approve/disapprove, filter, and search.
+
+### Storybook UI Components
+
+![Storybook UI](./assets/storybook-ui.png)
+
+Documentation and playground for `@flex-living/ui` components.
+
+### Backend API (NestJS)
+
+![Backend API](./assets/backend-api.png)
+
+NestJS modules, entities, and services powering the review API.
+
+### Hostaway Mock API
+
+![Hostaway Mock API](./assets/hostaway-mock-api.png)
+
+FastAPI-based mock used for local development and testing flows.
+
+### Packages Structure
+
+![Packages Structure](./assets/packages-structure.png)
+
+Monorepo packages layout: `ui`, `types`, and `utils` for shared code.
+
+### Packages Usage
+
+![Packages Usage](./assets/packages-usage.png)
+
+How apps consume shared packages via pnpm workspaces.
+
+### Preview Website (Up/Down)
+
+![Preview Up](./assets/preview-website-up.png)
+![Preview Down](./assets/preview-wesite-down.png)
+
+Visual indications for preview site states and error handling.
 
 ## 🛠️ Tech Stack
 
