@@ -2,13 +2,14 @@
 import { useApproveReview } from "@/hooks/useApproveReview";
 import { useDisproveReview } from "@/hooks/useDisproveReview";
 import { useReviews } from "@/hooks/useReviews";
+import { useSyncReviews } from "@/hooks/useSyncReviews";
 import { Review } from "@flex-living/types";
 import { Badge } from "@flex-living/ui/badges";
 import { Card, CardContent, CardHeader, CardTitle } from "@flex-living/ui/cards";
 import { Button, Input } from "@flex-living/ui/forms";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@flex-living/ui/selects";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@flex-living/ui/tables";
-import { CheckCircle, ChevronLeft, ChevronRight, Search, Star, XCircle } from "lucide-react";
+import { CheckCircle, ChevronLeft, ChevronRight, CircleAlert, Search, Star, XCircle } from "lucide-react";
 import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
 import { ChangeEvent } from "react";
 import { toast } from "sonner";
@@ -25,6 +26,7 @@ export const ReviewsTable = () => {
   const {data: reviews} = useReviews()
   const approveMutation = useApproveReview();
   const disproveMutation = useDisproveReview();
+  const syncMutation = useSyncReviews();
 
   const properties = Array.from(new Set(reviews?.map(r => r.listingName)));
 
@@ -55,6 +57,9 @@ export const ReviewsTable = () => {
     setCurrentPage(1);
   };
 
+    const handleSyncReviews = () => {
+      syncMutation.mutate()
+  };
 
 
   // Pagination calculations
@@ -82,7 +87,20 @@ export const ReviewsTable = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Reviews Management</CardTitle>
+        <div className="flex justify-between w-full">
+          <CardTitle>Reviews Management</CardTitle>
+          <Button
+              size="sm"
+              variant={ "destructive" }
+              onClick={() => handleSyncReviews()}
+              className="gap-1 text-white"
+            >
+
+                  <CircleAlert className="h-4 w-4" />
+                  Sync Reviews
+
+            </Button>
+        </div>
         <div className="flex flex-col md:flex-row gap-4 mt-4">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />

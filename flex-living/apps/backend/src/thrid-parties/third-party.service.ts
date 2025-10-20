@@ -20,11 +20,11 @@ export class ThirdPartyService {
   ) {}
 
   // Fetch token using client id/secret
-  private async authenticate(): Promise<void> {
-    const clientId = this.configService.get<string>('THIRD_PARTY_CLIENT_ID');
-    const clientSecret = this.configService.get<string>(
-      'THIRD_PARTY_CLIENT_SECRET',
-    );
+  private async authenticate(id?: string, secret?: string): Promise<void> {
+    const clientId =
+      id ?? this.configService.get<string>('THIRD_PARTY_CLIENT_ID');
+    const clientSecret =
+      secret ?? this.configService.get<string>('THIRD_PARTY_CLIENT_SECRET');
     const apiUrl = this.configService.get<string>('THIRD_PARTY_API_URL');
 
     try {
