@@ -46,7 +46,7 @@ export default function Home() {
       <footer className="bg-primary text-primary-foreground py-12">
         <div className="container mx-auto px-6 text-center">
           <p className="text-sm opacity-90">
-            © 2024 The Flex. All rights reserved.
+            © {new Date().getFullYear()} The Flex. All rights reserved.
           </p>
         </div>
       </footer>
