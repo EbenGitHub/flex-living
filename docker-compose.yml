@@ -39,12 +39,12 @@ services:
   #   networks:
   #     - web
 
-  # mockapi:
-  #   build:
-  #     context: /Users/mac/msl/flex-living/hostaway-mock-api
-  #     dockerfile: Dockerfile
-  #   networks:
-  #     - web
+  mockapi:
+    build:
+      context: ./hostaway-mock-api
+      dockerfile: Dockerfile
+    networks:
+      - web
 
   db:
     image: postgres:15-alpine

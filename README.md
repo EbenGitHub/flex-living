@@ -22,6 +22,16 @@ A comprehensive review management system for property management companies, buil
 - [Contributing](#contributing)
 - [License](#license)
 
+## ✅ Code Quality
+
+- **Testing**: Jest for backend unit/integration tests; Storybook and planned React tests for UI components. See scripts:
+  - Backend: `pnpm --filter backend test`, `test:watch`, `test:cov`
+  - E2E: `pnpm --filter backend test:e2e`
+- **Linting**: ESLint with strict TypeScript rules and Prettier formatting. Pre-commit hooks enforce style automatically.
+- **Husky + lint-staged**: Git hooks run ESLint/Prettier on staged files for fast feedback.
+- **Commit Convention**: Conventional Commits (e.g., `feat:`, `fix:`, `refactor:`, `docs:`). Example: `feat(review): add approval workflow`.
+- **CI-ready**: Turborepo tasks and scripts make it easy to add CI pipelines for tests and linting.
+
 ## 🎯 Overview
 
 Flex Living is a sophisticated review management platform designed for property management companies to:
