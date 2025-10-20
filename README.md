@@ -15,6 +15,7 @@ A comprehensive review management system for property management companies, buil
 - [API Documentation](#api-documentation)
 - [Key Features](#key-features)
 - [Design Decisions](#design-decisions)
+- [Next Play](#next-play-roadmap)
 - [Development Workflow](#development-workflow)
 - [Testing](#testing)
 - [Deployment](#deployment)
@@ -110,6 +111,13 @@ sequenceDiagram
 ```
 
 ## 🛠️ Tech Stack
+
+### Tech Stack Used (at a glance)
+
+- **Frontend**: Next.js 15, React 19, Tailwind CSS 4, Radix UI, TanStack Query, Recharts
+- **Backend**: NestJS 11, TypeORM, PostgreSQL 15, Redis 7, Axios, Swagger
+- **Monorepo/Tooling**: Turborepo, pnpm, ESLint, Prettier, Jest, Supertest
+- **DevOps**: Docker, Docker Compose, Nginx, FastAPI (mock service)
 
 ### Frontend
 
@@ -466,6 +474,37 @@ Response:
 - Excellent performance
 - Built-in optimization
 - Modern React patterns
+
+## 🗺️ Next Play (Roadmap)
+
+- **Authentication & Authorization (ABAC)**:
+  - Implement authentication flow (login/logout, refresh tokens)
+  - Add Attribute-Based Access Control for fine-grained permissions
+  - Define attributes for users, resources, and actions; enforce via guards
+- **Security Enhancements**:
+  - Add rate limiting, helmet headers, input sanitization
+  - Secrets management and secure config handling
+  - Audit logging and anomaly detection hooks
+- **UI/UX Improvements**:
+  - Refine information hierarchy and visual consistency
+  - Improve accessibility (WCAG), keyboard navigation, and theming
+  - Add empty/error/loading states across pages
+- **Codebase Cleanup**:
+  - Extract shared primitives and utilities to `packages/`
+  - Establish strict ESLint/Prettier rules and CI checks
+  - Remove dead code and align naming conventions
+- **Testing Strategy Expansion**:
+  - Add unit tests for services and hooks
+  - Add integration/e2e tests for critical user journeys
+  - Snapshot tests for UI components and visual regression via Storybook
+- **Rendering Strategy (SSR/SSG)**:
+  - Increase server-side rendering for data-heavy views
+  - Use SSG/ISR for public/marketing and stable analytics pages
+  - Cache headers and React streaming where applicable
+- **Metadata & SEO**:
+  - Add comprehensive Open Graph/Twitter meta tags
+  - Structured data (JSON-LD) for review content
+  - Sitemap, robots, canonical URLs, and i18n routing
 
 ## 🔄 Development Workflow
 
