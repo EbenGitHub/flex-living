@@ -640,6 +640,11 @@ curl http://localhost:4000/api/health/redis
 4. **Review**: Code review by maintainers
 5. **Merge**: Squash and merge to main
 
+### AI Used for this website
+
+1. **Gemini**
+2. **ChatGPT**
+
 ## 📄 License
 
 This project is licensed under the UNLICENSED License - see the [LICENSE](LICENSE) file for details.
