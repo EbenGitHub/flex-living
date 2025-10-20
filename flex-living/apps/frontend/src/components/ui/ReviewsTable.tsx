@@ -1,33 +1,34 @@
 "use client"
-import { Card, CardContent, CardHeader, CardTitle } from "@flex-living/ui/cards";
-import { useState } from "react";
-// import { Input } from "@flex-living/ui/inputs";
+import { useApproveReview } from "@/hooks/useApproveReview";
+import { useDisproveReview } from "@/hooks/useDisproveReview";
+import { useReviews } from "@/hooks/useReviews";
+import { Review } from "@flex-living/types";
 import { Badge } from "@flex-living/ui/badges";
+import { Card, CardContent, CardHeader, CardTitle } from "@flex-living/ui/cards";
+import { Button, Input } from "@flex-living/ui/forms";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@flex-living/ui/selects";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@flex-living/ui/tables";
-import { Review } from "@flex-living/types";
-import { Button } from "@flex-living/ui/forms";
 import { CheckCircle, ChevronLeft, ChevronRight, Search, Star, XCircle } from "lucide-react";
-import {useQueryState, parseAsString, parseAsInteger} from "nuqs"
-import {toast} from "sonner"
+import { parseAsInteger, parseAsString, useQueryState } from "nuqs";
+import { ChangeEvent } from "react";
+import { toast } from "sonner";
 
 const ITEMS_PER_PAGE = 10;
 
-interface ReviewsTableProps {
-  reviews: Review[];
-   onUpdateReview: (id: number, isApproved: boolean) => void;
-}
-
-export const ReviewsTable = ({ reviews, onUpdateReview }: ReviewsTableProps) => {
-  const [searchTerm, _] = useQueryState<string>("search", parseAsString.withDefault(""));
+export const ReviewsTable = () => {
+  const [searchTerm, setSearchTerm] = useQueryState<string>("search", parseAsString.withDefault(""));
   const [propertyFilter, setPropertyFilter] = useQueryState<string>("property-filter", parseAsString.withDefault("all"));
   const [statusFilter, setStatusFilter] = useQueryState<string>("status-filter", parseAsString.withDefault("all"));
   const [ratingFilter, setRatingFilter] = useQueryState<string>("rating-filter", parseAsString.withDefault("all"));
   const [currentPage, setCurrentPage] = useQueryState<number>("page", parseAsInteger.withDefault(1));
 
-  const properties = Array.from(new Set(reviews.map(r => r.listingName)));
+  const {data: reviews} = useReviews()
+  const approveMutation = useApproveReview();
+  const disproveMutation = useDisproveReview();
 
-  const filteredReviews = reviews.filter(review => {
+  const properties = Array.from(new Set(reviews?.map(r => r.listingName)));
+
+  const filteredReviews = (reviews??[]).filter(review => {
     const matchesSearch = review.publicReview.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          review.guestName.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesProperty = propertyFilter === "all" || review.listingName === propertyFilter;
@@ -66,7 +67,8 @@ export const ReviewsTable = ({ reviews, onUpdateReview }: ReviewsTableProps) => 
   const canGoNext = currentPage < totalPages;
 
   const handleApprovalToggle = (id: number, currentStatus: boolean) => {
-    onUpdateReview(id, !currentStatus);
+    if (!currentStatus) approveMutation.mutate(id);
+    else disproveMutation.mutate(id)
     toast.success(
       !currentStatus ? "Review approved for public display" : "Review removed from public display"
     );
@@ -84,16 +86,15 @@ export const ReviewsTable = ({ reviews, onUpdateReview }: ReviewsTableProps) => 
         <div className="flex flex-col md:flex-row gap-4 mt-4">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            {/* <Input
+            <Input
               placeholder="Search reviews or guest names..."
               value={searchTerm}
-              onChange={(e: InputEvent) => {
-                // @ts-ignore
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 setSearchTerm(e.target.value);
                 setCurrentPage(1);
               }}
               className="pl-10"
-            /> */}
+            />
           </div>
           <Select value={propertyFilter} onValueChange={handleFilterChange(setPropertyFilter)}>
             <SelectTrigger className="w-full md:w-[200px]">

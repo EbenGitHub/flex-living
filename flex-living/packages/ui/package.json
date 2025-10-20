@@ -62,7 +62,6 @@
     ".": "./src/main.ts",
     "./forms": "./src/forms/index.ts",
     "./cards": "./src/cards/index.ts",
-    "./inputs": "./src/inputs/index.ts",
     "./tables": "./src/tables/index.ts",
     "./selects": "./src/selects/index.ts",
     "./badges": "./src/badges/index.ts"

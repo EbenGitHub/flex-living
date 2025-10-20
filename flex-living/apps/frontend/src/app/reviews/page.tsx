@@ -1,21 +1,8 @@
-"use client"
-
-import { Review } from "@flex-living/types";
-import { Suspense, useState } from "react";
-import { mockReviews } from "../dashboard/page";
 import { ReviewsTable } from "@/components/ui/ReviewsTable";
+import { Suspense } from "react";
 
 
 export default function Home() {
-    const [reviews, setReviews] = useState<Review[]>(mockReviews);
-
-  const handleUpdateReview = (id: number, isApproved: boolean) => {
-    setReviews(prev =>
-      prev.map(review =>
-        review.id === id ? { ...review, isApproved } : review
-      )
-    );
-  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -27,7 +14,7 @@ export default function Home() {
         </div>
 
         <Suspense>
-          <ReviewsTable reviews={reviews} onUpdateReview={handleUpdateReview}/>
+          <ReviewsTable/>
         </Suspense>
     </div>
   );
