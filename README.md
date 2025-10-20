@@ -6,6 +6,7 @@ A comprehensive review management system for property management companies, buil
 
 - [Overview](#overview)
 - [Architecture](#architecture)
+- [Visual Overview](#visual-overview)
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
 - [Prerequisites](#prerequisites)
@@ -15,11 +16,22 @@ A comprehensive review management system for property management companies, buil
 - [API Documentation](#api-documentation)
 - [Key Features](#key-features)
 - [Design Decisions](#design-decisions)
+- [Next Play](#next-play-roadmap)
 - [Development Workflow](#development-workflow)
 - [Testing](#testing)
 - [Deployment](#deployment)
 - [Contributing](#contributing)
 - [License](#license)
+
+## ✅ Code Quality
+
+- **Testing**: Jest for backend unit/integration tests; Storybook and planned React tests for UI components. See scripts:
+  - Backend: `pnpm --filter backend test`, `test:watch`, `test:cov`
+  - E2E: `pnpm --filter backend test:e2e`
+- **Linting**: ESLint with strict TypeScript rules and Prettier formatting. Pre-commit hooks enforce style automatically.
+- **Husky + lint-staged**: Git hooks run ESLint/Prettier on staged files for fast feedback.
+- **Commit Convention**: Conventional Commits (e.g., `feat:`, `fix:`, `refactor:`, `docs:`). Example: `feat(review): add approval workflow`.
+- **CI-ready**: Turborepo tasks and scripts make it easy to add CI pipelines for tests and linting.
 
 ## 🎯 Overview
 
@@ -109,7 +121,67 @@ sequenceDiagram
     A->>R: Cache Token
 ```
 
+## 🖼️ Visual Overview
+
+Below are visual snapshots that highlight key parts of the application and repository.
+
+### Dashboard Metrics
+
+![Dashboard Metrics](./assets/dashboard-metrics.png)
+
+Shows the analytics dashboard with KPIs, charts, and trends for property reviews.
+
+### Review Management
+
+![Review Management](./assets/dashboard-manage.png)
+
+Admin view for moderating reviews: approve/disapprove, filter, and search.
+
+### Storybook UI Components
+
+![Storybook UI](./assets/storybook-ui.png)
+
+Documentation and playground for `@flex-living/ui` components.
+
+### Backend API (NestJS)
+
+![Backend API](./assets/backend-api.png)
+
+NestJS modules, entities, and services powering the review API.
+
+### Hostaway Mock API
+
+![Hostaway Mock API](./assets/hostaway-mock-api.png)
+
+FastAPI-based mock used for local development and testing flows.
+
+### Packages Structure
+
+![Packages Structure](./assets/packages-structure.png)
+
+Monorepo packages layout: `ui`, `types`, and `utils` for shared code.
+
+### Packages Usage
+
+![Packages Usage](./assets/packages-usage.png)
+
+How apps consume shared packages via pnpm workspaces.
+
+### Preview Website (Up/Down)
+
+![Preview Up](./assets/preview-website-up.png)
+![Preview Down](./assets/preview-wesite-down.png)
+
+Visual indications for preview site states and error handling.
+
 ## 🛠️ Tech Stack
+
+### Tech Stack Used (at a glance)
+
+- **Frontend**: Next.js 15, React 19, Tailwind CSS 4, Radix UI, TanStack Query, Recharts
+- **Backend**: NestJS 11, TypeORM, PostgreSQL 15, Redis 7, Axios, Swagger
+- **Monorepo/Tooling**: Turborepo, pnpm, ESLint, Prettier, Jest, Supertest
+- **DevOps**: Docker, Docker Compose, Nginx, FastAPI (mock service)
 
 ### Frontend
 
@@ -466,6 +538,37 @@ Response:
 - Excellent performance
 - Built-in optimization
 - Modern React patterns
+
+## 🗺️ Next Play (Roadmap)
+
+- **Authentication & Authorization (ABAC)**:
+  - Implement authentication flow (login/logout, refresh tokens)
+  - Add Attribute-Based Access Control for fine-grained permissions
+  - Define attributes for users, resources, and actions; enforce via guards
+- **Security Enhancements**:
+  - Add rate limiting, helmet headers, input sanitization
+  - Secrets management and secure config handling
+  - Audit logging and anomaly detection hooks
+- **UI/UX Improvements**:
+  - Refine information hierarchy and visual consistency
+  - Improve accessibility (WCAG), keyboard navigation, and theming
+  - Add empty/error/loading states across pages
+- **Codebase Cleanup**:
+  - Extract shared primitives and utilities to `packages/`
+  - Establish strict ESLint/Prettier rules and CI checks
+  - Remove dead code and align naming conventions
+- **Testing Strategy Expansion**:
+  - Add unit tests for services and hooks
+  - Add integration/e2e tests for critical user journeys
+  - Snapshot tests for UI components and visual regression via Storybook
+- **Rendering Strategy (SSR/SSG)**:
+  - Increase server-side rendering for data-heavy views
+  - Use SSG/ISR for public/marketing and stable analytics pages
+  - Cache headers and React streaming where applicable
+- **Metadata & SEO**:
+  - Add comprehensive Open Graph/Twitter meta tags
+  - Structured data (JSON-LD) for review content
+  - Sitemap, robots, canonical URLs, and i18n routing
 
 ## 🔄 Development Workflow
 
