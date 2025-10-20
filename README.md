@@ -284,11 +284,39 @@ pnpm install
 Create environment files for different services:
 
 ```bash
-# Create .env file in project root
-touch .env
-
 # Create frontend environment file
 touch flex-living/apps/frontend/.env
+# NEXT_PUBLIC_API_URL="http://localhost:3001/api
+
+# Create backend environment file
+touch flex-living/apps/backend/.env
+# DB_SYNC="true"
+# DB_LOGGING="true"
+# DB_URL="postgresql://flex_user:flex_password@db:5432/flex_db"
+# REDIS_URL="redis://redis:6379"
+# THIRD_PARTY_CLIENT_ID="1234"
+# THIRD_PARTY_CLIENT_SECRET="some-secret"
+# THIRD_PARTY_API_URL="http://hostaway/api/v1"
+
+# Create hostaway mock api environment file
+touch hostaway-mock-api/.env
+# BASE_URL=https://api.hostaway.com/v1
+# TIMEOUT=20
+# CONNECT_TIMEOUT=10
+
+# Create .env file in project root
+touch .env
+# DB_SYNC="true"
+# DB_LOGGING="true"
+# DB_URL="postgresql://flex_user:flex_password@db:5432/flex_db"
+# REDIS_URL="redis://redis:6379"
+# THIRD_PARTY_CLIENT_ID="1234"
+# THIRD_PARTY_CLIENT_SECRET="some-secret"
+# THIRD_PARTY_API_URL="http://hostaway/api/v1"
+# NEXT_PUBLIC_API_URL="http://localhost:3001/api
+# BASE_URL=https://api.hostaway.com/v1
+# TIMEOUT=20
+# CONNECT_TIMEOUT=10
 ```
 
 ### 4. Database Setup
@@ -300,19 +328,18 @@ The application uses Docker Compose for database setup. No manual database confi
 ### Root .env File
 
 ```env
-
 DB_SYNC="true"
 DB_LOGGING="true"
 
-DB_URL="postgresql://username:password@host.com/db"
-REDIS_URL="rediss://username:password@host.com:port"
+DB_URL="postgresql://flex_user:flex_password@db:5432/flex_db"
+REDIS_URL="redis://redis:6379"
 
 THIRD_PARTY_CLIENT_ID="1234"
-THIRD_PARTY_CLIENT_SECRET="12312312312"
+THIRD_PARTY_CLIENT_SECRET="some-secret"
 
-THIRD_PARTY_API_URL="https://host.com/api/v1"
+THIRD_PARTY_API_URL="http://hostaway/api/v1"
 
-NEXT_PUBLIC_API_URL="https://host.com/api"
+NEXT_PUBLIC_API_URL="http://localhost:3001/api
 ```
 
 ### Frontend .env.local
@@ -331,6 +358,13 @@ docker compose up db redis hostaway -d
 
 # Start the monorepo
 cd flex-living && pnpm install && pnpm run dev
+```
+
+### All Docker Compose (Quick)
+
+```bash
+# Starts all services in development mode
+docker compose up --build -d
 ```
 
 ### Individual Service Commands

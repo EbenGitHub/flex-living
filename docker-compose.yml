@@ -8,8 +8,21 @@ services:
       target: runner_backend
       args:
         APP_NAME: backend
+    environment:
+      - DB_URL=postgresql://flex_user:flex_password@db:5432/flex_db
+      - REDIS_URL=redis://redis:6379
+      - DB_SYNC="true"
+      - DB_LOGGING="true"
+      - THIRD_PARTY_API_URL="http://hostaway/api/v1"
+      - NODE_ENV="development"
     ports:
       - "3001:3001"
+    depends_on:
+      - db
+      - redis
+      - hostaway
+    networks:
+      - web
 
   frontend:
     build:
@@ -18,13 +31,22 @@ services:
       target: runner_frontend
       args:
         APP_NAME: frontend
+    environment:
+      # Point frontend to the backend service over the internal docker network
+      - NEXT_PUBLIC_API_URL=http://localhost:3001/api
     ports:
       - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - web
 
   hostaway:
     build:
       context: ./hostaway-mock-api
       dockerfile: Dockerfile
+    networks:
+      - web
     ports:
       - "8000:8000"
 
@@ -51,12 +73,16 @@ services:
     restart: always
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    env_file:
-      - .env
+    environment:
+      POSTGRES_USER: flex_user
+      POSTGRES_PASSWORD: flex_password
+      POSTGRES_DB: flex_db
     expose:
       - 5432
     ports:
       - "5432:5432"
+    networks:
+      - web
 
   redis:
     image: redis:7-alpine
@@ -67,6 +93,8 @@ services:
       - 6379
     ports:
       - "6379:6379"
+    networks:
+      - web
 
   # nginx:
   #   image: nginx:alpine

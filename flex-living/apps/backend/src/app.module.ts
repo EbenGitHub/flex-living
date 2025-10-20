@@ -13,17 +13,25 @@ import { ReviewCategory } from './entities/review-category.entity';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        url: configService.get<string>('DB_URL'),
-        autoLoadEntities: true,
-        ssl: {
-          rejectUnauthorized: false, // required for Render
-        },
-        entities: [Review, ReviewCategory],
-        synchronize: configService.get<boolean>('DB_SYNC') ?? true,
-        logging: configService.get<boolean>('DB_LOGGING') ?? true,
-      }),
+      useFactory: (configService: ConfigService) => {
+        const isProd = configService
+          .get<string>('NODE_ENV')
+          ?.toLowerCase()
+          ?.startsWith('prod');
+        return {
+          type: 'postgres',
+          url: configService.get<string>('DB_URL'),
+          autoLoadEntities: true,
+          ssl: isProd
+            ? {
+                rejectUnauthorized: false, // required for Render
+              }
+            : false,
+          entities: [Review, ReviewCategory],
+          synchronize: configService.get<boolean>('DB_SYNC') ?? true,
+          logging: configService.get<boolean>('DB_LOGGING') ?? true,
+        };
+      },
     }),
     ReviewModule,
   ],
