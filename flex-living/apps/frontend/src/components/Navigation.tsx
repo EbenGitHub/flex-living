@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Building2, BarChart3, MessageSquare } from "lucide-react";
+import { Building2, BarChart3, ScanEye , MessageSquare} from "lucide-react";
 
 export const Navigation = () => {
   const pathname = usePathname();
@@ -10,6 +10,7 @@ export const Navigation = () => {
   const navItems = [
     { href: "/dashboard", label: "Dashboard", icon: BarChart3 },
     { href: "/reviews", label: "Review Management", icon: MessageSquare },
+    { href: "/preview", label: "Preview Website", icon: ScanEye },
   ];
 
   return (

@@ -78,6 +78,12 @@ export class ReviewService {
     return instanceToPlain(this.reviewRepo.find());
   }
 
+  async findApprovedReviews() {
+    return instanceToPlain(
+      this.reviewRepo.find({ where: { isApproved: true } }),
+    );
+  }
+
   async approveReview(id: number): Promise<Review> {
     const review = await this.reviewRepo.findOne({ where: { id } });
     if (!review) {

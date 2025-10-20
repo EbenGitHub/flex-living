@@ -16,6 +16,11 @@ export class ReviewController {
     return this.reviewService.findAll();
   }
 
+  @Get('approved')
+  approvedReviews() {
+    return this.reviewService.findApprovedReviews();
+  }
+
   @Post('sync-hostaway')
   syncHostaway() {
     return this.reviewService.syncReviewsFromHostaway();
