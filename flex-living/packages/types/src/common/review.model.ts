@@ -15,3 +15,13 @@ export interface Review {
   listingName: string;
   isApproved: boolean;
 }
+
+export interface NormalizedReview {
+  listingName: string;
+  type: string;
+  source: string;
+  date: string;
+  totalReviews: number;
+  avgRating: number;
+  ratings: number[];
+}

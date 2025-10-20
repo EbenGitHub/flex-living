@@ -5,8 +5,8 @@ import { ReviewCategory } from '../entities/review-category.entity';
 import { Review } from '../entities/review.entity';
 import { ThirdPartyService } from '../thrid-parties/third-party.service';
 import { CreateReviewDto } from './dto/create-review.dto';
-import { UpdateReviewDto } from './dto/update-review.dto';
 import { instanceToPlain } from 'class-transformer';
+import { NormalizedReview, Review as ReviewType } from '@flex-living/types';
 
 @Injectable()
 export class ReviewService {
@@ -25,15 +25,50 @@ export class ReviewService {
 
   async syncReviewsFromGoogleReview(): Promise<void> {}
 
+  normalizeReviews(reviews: Review[]) {
+    const map = new Map<string, NormalizedReview>();
+
+    for (const review of reviews) {
+      const dateKey = new Date(review.submittedAt).toISOString().split('T')[0]; // YYYY-MM-DD
+      const key = `${review.listingName}|${review.type}|${review.source}|${dateKey}`;
+
+      const avgRating =
+        review.rating ??
+        review.reviewCategory.reduce((sum, cat) => sum + cat.rating, 0) /
+          review.reviewCategory.length;
+
+      if (map.has(key)) {
+        const entry = map.get(key)!;
+        entry.ratings.push(avgRating);
+        entry.totalReviews += 1;
+        entry.avgRating =
+          entry.ratings.reduce((a, b) => a + b, 0) / entry.ratings.length;
+      } else {
+        map.set(key, {
+          listingName: review.listingName,
+          type: review.type,
+          source: review.source,
+          date: dateKey,
+          totalReviews: 1,
+          avgRating: avgRating,
+          ratings: [avgRating],
+        });
+      }
+    }
+
+    return Array.from(map.values());
+  }
+
   async syncReviewsFromHostaway(): Promise<void> {
     console.log('called');
     try {
-      const data = await this.thirdParty.get<{ result: any[] }>('/reviews');
+      const data = await this.thirdParty.get<{ result: ReviewType[] }>(
+        '/reviews',
+      );
 
-      // Assuming data is an array of reviews
       for (const item of data.result) {
         const existing = await this.reviewRepo.findOne({
-          where: { sourceId: item.id, source: 'hostaway' },
+          where: { sourceId: item.id.toString(), source: 'hostaway' },
         });
         if (existing) {
           this.logger.log(`Skipping review ${item.id} (already exists)`);
@@ -49,7 +84,7 @@ export class ReviewService {
           submittedAt: new Date(item.submittedAt),
           guestName: item.guestName,
           listingName: item.listingName,
-          sourceId: item.id,
+          sourceId: item.id.toString(),
           source: 'hostaway',
         });
 
@@ -76,6 +111,14 @@ export class ReviewService {
 
   async findAll() {
     return instanceToPlain(this.reviewRepo.find());
+  }
+
+  async getNormalizedReviews(): Promise<NormalizedReview[]> {
+    const reviews = await this.reviewRepo.find({
+      relations: ['reviewCategory'],
+    });
+
+    return this.normalizeReviews(reviews);
   }
 
   async findApprovedReviews() {
