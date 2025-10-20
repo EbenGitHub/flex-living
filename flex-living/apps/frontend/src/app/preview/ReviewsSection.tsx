@@ -5,7 +5,7 @@ import { Quote, Star } from "lucide-react";
 
 
 const ReviewsSection = () => {
-    const {data: reviews} = useApprovedReviews();
+    const {data: reviews, isPending, error} = useApprovedReviews();
   return (
     <section className="py-20 bg-background">
       <div className="container mx-auto px-6">
@@ -19,7 +19,29 @@ const ReviewsSection = () => {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-          {(reviews??[]).map((review, index) => (
+          {isPending && (
+            Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="h-44 rounded-2xl bg-gray-100 animate-pulse" />
+            ))
+          )}
+
+          {!isPending && error && (
+            <div className="md:col-span-2 lg:col-span-3">
+              <div className="rounded-md border border-red-200 bg-red-50 p-6 text-center text-red-700">
+                Failed to load reviews. Please try again later.
+              </div>
+            </div>
+          )}
+
+          {!isPending && !error && (reviews ?? []).length === 0 && (
+            <div className="md:col-span-2 lg:col-span-3">
+              <div className="rounded-md border p-6 text-center text-muted-foreground">
+                No reviews to display yet.
+              </div>
+            </div>
+          )}
+
+          {!isPending && !error && (reviews??[]).map((review, index) => (
             <div
               key={review.id}
               className="bg-card rounded-2xl p-6 shadow-card hover:shadow-hero transition-all duration-300 hover:-translate-y-2 animate-fade-in-up relative overflow-hidden group"

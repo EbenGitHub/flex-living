@@ -6,9 +6,30 @@ import { CheckCircle, MessageSquare, Star, TrendingUp } from "lucide-react";
 
 interface MetricsCardsProps {
   reviews: Review[];
+  isPending: boolean;
 }
 
-export const MetricsCards = ({ reviews }: MetricsCardsProps) => {
+export const MetricsCards = ({ reviews, isPending }: MetricsCardsProps) => {
+  if (isPending) {
+    // Skeleton loading state
+    return (
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {[...Array(4)].map((_, i) => (
+          <Card key={i} className="p-6 animate-pulse">
+            <div className="flex items-center justify-between">
+              <div className="space-y-3 w-full">
+                <div className="h-4 w-24 bg-gray-200 rounded"></div>
+                <div className="h-8 w-16 bg-gray-300 rounded"></div>
+                <div className="h-3 w-20 bg-gray-200 rounded"></div>
+              </div>
+              <div className="p-4 rounded-full bg-gray-200"></div>
+            </div>
+          </Card>
+        ))}
+      </div>
+    );
+  }
+
   const totalReviews = reviews.length;
   const approvedReviews = reviews.filter(r => r.isApproved).length;
   const avgRating = reviews.reduce((sum, r) => {

@@ -5,9 +5,22 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 
 interface PropertyComparisonChartProps {
   reviews: Review[];
+  isPending?: boolean;
 }
 
-export const PropertyComparisonChart = ({ reviews }: PropertyComparisonChartProps) => {
+export const PropertyComparisonChart = ({ reviews, isPending }: PropertyComparisonChartProps) => {
+  if (isPending) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Property Performance Comparison</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="h-[300px] w-full animate-pulse rounded-md bg-gray-100" />
+        </CardContent>
+      </Card>
+    );
+  }
   const propertyData = reviews.reduce((acc, review) => {
     const propertyKey = review.listingName;
 

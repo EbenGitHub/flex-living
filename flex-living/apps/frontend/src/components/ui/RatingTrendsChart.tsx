@@ -5,9 +5,22 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 
 interface RatingTrendsChartProps {
   reviews: Review[];
+  isPending: boolean;
 }
 
-export const RatingTrendsChart = ({ reviews }: RatingTrendsChartProps) => {
+export const RatingTrendsChart = ({ reviews, isPending }: RatingTrendsChartProps) => {
+  if (isPending) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Rating Trends Over Time</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="h-[350px] w-full animate-pulse rounded-md bg-gray-100" />
+        </CardContent>
+      </Card>
+    );
+  }
   // Group reviews by month
   const monthlyData = reviews.reduce((acc, review) => {
     const date = new Date(review.submittedAt);

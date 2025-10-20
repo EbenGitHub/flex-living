@@ -23,12 +23,12 @@ export const ReviewsTable = () => {
   const [ratingFilter, setRatingFilter] = useQueryState<string>("rating-filter", parseAsString.withDefault("all"));
   const [currentPage, setCurrentPage] = useQueryState<number>("page", parseAsInteger.withDefault(1));
 
-  const {data: reviews} = useReviews()
+  const {data: reviews, isPending, error} = useReviews()
   const approveMutation = useApproveReview();
   const disproveMutation = useDisproveReview();
   const syncMutation = useSyncReviews();
 
-  const properties = Array.from(new Set(reviews?.map(r => r.listingName)));
+  const properties = Array.from(new Set((reviews ?? []).map(r => r.listingName)));
 
   const filteredReviews = (reviews??[]).filter(review => {
     const matchesSearch = review.publicReview.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -83,6 +83,54 @@ export const ReviewsTable = () => {
     if (review.rating) return review.rating;
     return review.reviewCategory.reduce((sum, cat) => sum + cat.rating, 0) / review.reviewCategory.length;
   };
+
+  if (isPending) {
+    return (
+      <Card>
+        <CardHeader>
+          <div className="flex justify-between w-full">
+            <CardTitle>Reviews Management</CardTitle>
+            <div className="h-9 w-28 rounded-md bg-gray-100 animate-pulse" />
+          </div>
+          <div className="flex flex-col md:flex-row gap-4 mt-4">
+            <div className="h-10 flex-1 rounded-md bg-gray-100 animate-pulse" />
+            <div className="h-10 w-[200px] rounded-md bg-gray-100 animate-pulse" />
+            <div className="h-10 w-[180px] rounded-md bg-gray-100 animate-pulse" />
+            <div className="h-10 w-[150px] rounded-md bg-gray-100 animate-pulse" />
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="rounded-md border p-4">
+            <div className="h-6 w-full bg-gray-100 animate-pulse rounded mb-3" />
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div key={i} className="h-10 w-full bg-gray-50 animate-pulse rounded mb-2" />
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (error) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Reviews Management</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center gap-3 rounded-md border border-red-200 bg-red-50 p-4 text-red-700">
+            <CircleAlert className="h-5 w-5" />
+            <div>
+              <p className="font-medium">Failed to load reviews.</p>
+              <p className="text-sm text-red-600">Please refresh the page or try again later.</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  const hasAnyReviews = (reviews ?? []).length > 0;
 
   return (
     <Card>
@@ -152,6 +200,11 @@ export const ReviewsTable = () => {
         </div>
       </CardHeader>
       <CardContent>
+        {!hasAnyReviews ? (
+          <div className="rounded-md border p-10 text-center text-muted-foreground">
+            No reviews available yet.
+          </div>
+        ) : (
         <div className="rounded-md border">
           <Table>
             <TableHeader>
@@ -223,9 +276,10 @@ export const ReviewsTable = () => {
             </TableBody>
           </Table>
         </div>
+        )}
 
         {/* Pagination Controls */}
-        {filteredReviews.length > 0 && (
+        {hasAnyReviews && filteredReviews.length > 0 && (
           <div className="flex items-center justify-between px-2 py-4">
             <div className="text-sm text-muted-foreground">
               Showing {startIndex + 1} to {Math.min(endIndex, filteredReviews.length)} of {filteredReviews.length} reviews

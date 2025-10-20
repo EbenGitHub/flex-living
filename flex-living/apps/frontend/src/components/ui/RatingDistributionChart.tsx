@@ -5,9 +5,22 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recha
 
 interface RatingDistributionChartProps {
   reviews: Review[];
+  isPending?: boolean;
 }
 
-export const RatingDistributionChart = ({ reviews }: RatingDistributionChartProps) => {
+export const RatingDistributionChart = ({ reviews, isPending }: RatingDistributionChartProps) => {
+  if (isPending) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Rating Distribution</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="h-[300px] w-full animate-pulse rounded-md bg-gray-100" />
+        </CardContent>
+      </Card>
+    );
+  }
   const distribution = {
     excellent: 0, // 9-10
     good: 0,      // 7-8

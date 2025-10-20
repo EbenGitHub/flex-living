@@ -8,8 +8,21 @@ import { useReviews } from "@/hooks/useReviews";
 
 
 export default function Home() {
-  const {data: reviews} = useReviews()
+  const {data: reviews, isPending, error} = useReviews()
   const mockReviews = reviews ?? []
+  if (error) {
+    return (
+      <div className="min-h-screen bg-background">
+        <main className="container mx-auto px-4 py-8 space-y-8">
+          <div className="rounded-md border border-red-200 bg-red-50 p-6 text-red-700">
+            <p className="font-medium">Failed to load dashboard data.</p>
+            <p className="text-sm">Please refresh the page or try again later.</p>
+          </div>
+        </main>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-background">
        <main className="container mx-auto px-4 py-8 space-y-8">
@@ -18,16 +31,16 @@ export default function Home() {
           <p className="text-muted-foreground">Monitor key metrics and trends across all properties</p>
         </div>
 
-        <MetricsCards reviews={mockReviews} />
+        <MetricsCards isPending={isPending} reviews={mockReviews} />
 
         <div className="grid gap-6 lg:grid-cols-2">
-          <RatingTrendsChart reviews={mockReviews} />
-          <CategoryBreakdownChart reviews={mockReviews} />
+          <RatingTrendsChart isPending={isPending} reviews={mockReviews} />
+          <CategoryBreakdownChart isPending={isPending} reviews={mockReviews} />
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">
-          <PropertyComparisonChart reviews={mockReviews} />
-          <RatingDistributionChart reviews={mockReviews} />
+          <PropertyComparisonChart isPending={isPending} reviews={mockReviews} />
+          <RatingDistributionChart isPending={isPending} reviews={mockReviews} />
         </div>
       </main>
     </div>

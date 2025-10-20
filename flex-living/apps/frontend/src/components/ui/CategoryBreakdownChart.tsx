@@ -5,9 +5,22 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 
 interface CategoryBreakdownChartProps {
   reviews: Review[];
+  isPending?: boolean;
 }
 
-export const CategoryBreakdownChart = ({ reviews }: CategoryBreakdownChartProps) => {
+export const CategoryBreakdownChart = ({ reviews, isPending }: CategoryBreakdownChartProps) => {
+  if (isPending) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Category Performance</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="h-[300px] w-full animate-pulse rounded-md bg-gray-100" />
+        </CardContent>
+      </Card>
+    );
+  }
   const categories = ['cleanliness', 'communication', 'respect_house_rules'];
 
   const categoryData = categories.map(category => {
