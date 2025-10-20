@@ -23,11 +23,9 @@ A comprehensive review management system for property management companies, buil
 - [Contributing](#contributing)
 - [License](#license)
 
-## ✅ Code Quality
+## ✅ Code Quality (TODO)
 
-- **Testing**: Jest for backend unit/integration tests; Storybook and planned React tests for UI components. See scripts:
-  - Backend: `pnpm --filter backend test`, `test:watch`, `test:cov`
-  - E2E: `pnpm --filter backend test:e2e`
+- **Testing**: Set up Jest for backend unit/integration tests; Storybook and planned React tests for UI components. But due to short period of time i was given, i could not implement tests.
 - **Linting**: ESLint with strict TypeScript rules and Prettier formatting. Pre-commit hooks enforce style automatically.
 - **Husky + lint-staged**: Git hooks run ESLint/Prettier on staged files for fast feedback.
 - **Commit Convention**: Conventional Commits (e.g., `feat:`, `fix:`, `refactor:`, `docs:`). Example: `feat(review): add approval workflow`.
@@ -135,7 +133,7 @@ Shows the analytics dashboard with KPIs, charts, and trends for property reviews
 
 ![Review Management](./assets/dashboard-manage.png)
 
-Admin view for moderating reviews: approve/disapprove, filter, and search.
+Admin view for moderating reviews: approve/disapprove, filter, and search. You can also sync review from hostaway using the red sync button.
 
 ### Storybook UI Components
 
@@ -159,7 +157,7 @@ FastAPI-based mock used for local development and testing flows.
 
 ![Packages Structure](./assets/packages-structure.png)
 
-Monorepo packages layout: `ui`, `types`, and `utils` for shared code.
+Monorepo packages layout: `ui`, `types`, and `utils` for shared code. They can be use anywhere in the app (frontend, backend, storybook) and they are tree shakable (@flex-living/ui/react imports only react part)
 
 ### Packages Usage
 
@@ -704,9 +702,11 @@ This project is licensed under the UNLICENSED License - see the [LICENSE](LICENS
 
 For support and questions:
 
+- **Deployed Url**: [url](https://flex-living-assessment-3gae.onrender.com/dashboard)
 - **Email**: abenezergoo@gmail.com
-- **Issues**: [GitHub Issues](https://github.com/your-repo/issues)
-- **Documentation**: [Project Wiki](https://github.com/your-repo/wiki)
+- **Repo**: [flex-living](https://github.com/EbenGitHub/flex-living)
+- **Issues**: [GitHub Issues](https://github.com/EbenGitHub/issues)
+- **Documentation**: [Project Wiki](https://github.com/EbenGitHub/wiki)
 
 ## 🔗 Related Links
 
