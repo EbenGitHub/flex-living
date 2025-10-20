@@ -265,7 +265,7 @@ Before running the application, ensure you have:
 ### 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/EbenGitHub/flex-living.git
 cd flex-living
 ```
 
@@ -288,7 +288,7 @@ Create environment files for different services:
 touch .env
 
 # Create frontend environment file
-touch flex-living/apps/frontend/.env.local
+touch flex-living/apps/frontend/.env
 ```
 
 ### 4. Database Setup
@@ -300,32 +300,25 @@ The application uses Docker Compose for database setup. No manual database confi
 ### Root .env File
 
 ```env
-# Database Configuration
-DB_HOST=localhost
-DB_PORT=5432
-DB_USER=postgres
-DB_PASSWORD=your_password
-DB_NAME=flex_living
-DB_SYNC=true
-DB_LOGGING=true
 
-# Redis Configuration
-REDIS_URL=redis://localhost:6379
+DB_SYNC="true"
+DB_LOGGING="true"
 
-# Third Party API Configuration
-THIRD_PARTY_API_URL=http://localhost:8000
-THIRD_PARTY_CLIENT_ID=your_client_id
-THIRD_PARTY_CLIENT_SECRET=your_client_secret
+DB_URL="postgresql://username:password@host.com/db"
+REDIS_URL="rediss://username:password@host.com:port"
 
-# Application Configuration
-PORT=4000
-NODE_ENV=development
+THIRD_PARTY_CLIENT_ID="1234"
+THIRD_PARTY_CLIENT_SECRET="12312312312"
+
+THIRD_PARTY_API_URL="https://host.com/api/v1"
+
+NEXT_PUBLIC_API_URL="https://host.com/api"
 ```
 
 ### Frontend .env.local
 
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:4000/api
+NEXT_PUBLIC_API_URL=http://localhost:3001/api
 ```
 
 ## 🏃‍♂️ Running the Application
@@ -333,11 +326,11 @@ NEXT_PUBLIC_API_URL=http://localhost:4000/api
 ### Development Mode (Recommended)
 
 ```bash
-# Start all services with Docker Compose
-docker-compose up -d
+# Start db and redis services with Docker Compose
+docker compose up db redis hostaway -d
 
-# Or run individual services
-pnpm dev
+# Start the monorepo
+cd flex-living && pnpm install && pnpm run dev
 ```
 
 ### Individual Service Commands
@@ -356,26 +349,16 @@ cd hostaway-mock-api
 python -m uvicorn app.main:app --reload --port 8000
 ```
 
-### Production Mode
-
-```bash
-# Build all services
-pnpm build
-
-# Start production containers
-docker-compose -f docker-compose.prod.yml up -d
-```
-
 ## 📚 API Documentation
 
 ### Base URL
 
-- **Development**: `http://localhost:4000/api`
-- **Production**: `https://your-domain.com/api`
+- **Development**: `http://localhost:3001/docs`
+- **Production**: `https://flex-backend-wqtb.onrender.com/api`
 
 ### Swagger Documentation
 
-Access interactive API documentation at: `http://localhost:4000/docs`
+Access interactive API documentation at: `http://localhost:3001/docs`
 
 ### Core Endpoints
 
@@ -593,43 +576,6 @@ git push origin feature/new-feature
 - **Prettier**: Code formatting
 - **Husky**: Git hooks for quality checks
 - **TypeScript**: Compile-time type checking
-
-### 3. Testing Strategy
-
-- **Unit Tests**: Jest for individual functions
-- **Integration Tests**: API endpoint testing
-- **E2E Tests**: Full application testing
-- **Component Tests**: Storybook for UI components
-
-## 🧪 Testing
-
-### Running Tests
-
-```bash
-# Run all tests
-pnpm test
-
-# Run backend tests
-cd flex-living/apps/backend
-pnpm test
-
-# Run frontend tests
-cd flex-living/apps/frontend
-pnpm test
-
-# Run E2E tests
-pnpm test:e2e
-```
-
-### Test Coverage
-
-```bash
-# Generate coverage report
-pnpm test:cov
-
-# View coverage in browser
-open coverage/lcov-report/index.html
-```
 
 ## 🚀 Deployment
 
