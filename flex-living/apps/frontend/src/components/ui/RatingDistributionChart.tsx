@@ -45,8 +45,7 @@ export const RatingDistributionChart = ({ reviews }: RatingDistributionChartProp
               cx="50%"
               cy="50%"
               labelLine={false}
-              // @ts-ignore
-              label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+              label={({ name, index }) => `${name}: ${(index * 100).toFixed(0)}%`}
               outerRadius={80}
               dataKey="value"
             >

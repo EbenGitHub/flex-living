@@ -1,5 +1,4 @@
 import { MetricsCards } from "@/components/ui/MetricsCards";
-import { flexLivingPackageTest } from "@flex-living/utils/test";
 import { Review } from "@flex-living/types";
 import { RatingTrendsChart } from "@/components/ui/RatingTrendsChart";
 import { CategoryBreakdownChart } from "@/components/ui/CategoryBreakdownChart";
@@ -93,12 +92,10 @@ export const generateMockReviews = (count: number = 50): Review[] => {
 export const mockReviews = generateMockReviews(100);
 
 export default function Home() {
-  const test = flexLivingPackageTest()
   return (
     <div className="min-h-screen bg-background">
        <main className="container mx-auto px-4 py-8 space-y-8">
         <div>
-            {test}
           <h2 className="text-3xl font-bold mb-2">Performance Overview</h2>
           <p className="text-muted-foreground">Monitor key metrics and trends across all properties</p>
         </div>

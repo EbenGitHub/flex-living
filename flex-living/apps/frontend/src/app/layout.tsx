@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Navigation } from "@/components/Navigation";
+import { NuqsAdapter } from 'nuqs/adapters/next/app'
 // import "@flex-living/ui/globals.css";
 
 const geistSans = Geist({
@@ -30,10 +32,13 @@ export default function RootLayout({
 
     <meta property="og:title" content="Flex Living Reviews Dashboard" />
     <meta property="og:description" content="Professional reviews dashboard for monitoring property guest feedback and ratings" />
+    <Navigation />
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <NuqsAdapter>
         {children}
+        </NuqsAdapter>
       </body>
     </html>
   );
