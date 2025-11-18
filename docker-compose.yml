@@ -70,7 +70,6 @@ services:
 
   db:
     image: postgres:15-alpine
-    restart: always
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
@@ -86,7 +85,6 @@ services:
 
   redis:
     image: redis:7-alpine
-    restart: always
     volumes:
       - redis_data:/data
     expose:
